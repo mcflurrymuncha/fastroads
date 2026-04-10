@@ -46,7 +46,7 @@ From the repo root, run:
 .\build.ps1
 ```
 
-This installs `pyinstaller` if needed and produces a local bundled executable in `dist\run`.
+This installs `pyinstaller` if needed and produces a local bundled executable in `dist\fastroads`.
 
 To build a single-file executable instead, run:
 
@@ -71,7 +71,9 @@ To clean previous build artifacts:
 A GitHub Actions workflow is included at `.github/workflows/build.yml`.
 It builds both a normal release and a debug version on every push and pull request to `main`.
 
-The workflow uploads two artifacts:
+When a tag matching `v*` is pushed, the workflow also creates a GitHub release and uploads both zip packages.
+
+The workflow uploads two artifacts for each build run:
 - `fastroads-normal-build`
 - `fastroads-debug-build`
 

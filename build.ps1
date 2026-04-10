@@ -70,10 +70,11 @@ foreach ($hiddenImport in $hiddenImports) {
 
 $args += '--collect-submodules'
 $args += 'webview'
-
+$args += '--name'
+$args += 'fastroads'
 $args += 'run.py'
 
 Write-Host '[fastroadsinstall] Building executable with PyInstaller...'
 Write-Host "[fastroadsinstall] python -m PyInstaller $($args -join ' ')"
 & python -m PyInstaller @args
-Write-Host '[fastroadsinstall] Build complete. See dist\run or dist\run.exe depending on mode.'
+Write-Host '[fastroadsinstall] Build complete. See dist\fastroads or dist\fastroads.exe depending on mode.'

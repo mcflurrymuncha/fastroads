@@ -18,6 +18,11 @@ except ImportError:
 
 ROOT = Path(__file__).resolve().parent
 HOST = "127.0.0.1"
+ICO_PATH = ROOT / "favicon_circle.ico"
+
+
+def load_icon_path() -> str | None:
+    return str(ICO_PATH) if ICO_PATH.exists() else None
 
 
 class GameRequestHandler(http.server.SimpleHTTPRequestHandler):
@@ -60,7 +65,8 @@ def main() -> None:
         fullscreen=True,
     )
 
-    webview.start()
+    icon = load_icon_path()
+    webview.start(gui='edgechromium', icon=icon)
     server.shutdown()
     server.server_close()
 
