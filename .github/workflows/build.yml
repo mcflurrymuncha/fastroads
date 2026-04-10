@@ -13,10 +13,16 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
     strategy:
       matrix:
+        include:
+          - osName: windows
+            runsOn: windows-latest
+          - osName: linux
+            runsOn: ubuntu-latest
         config: [normal, debug]
+
+    runs-on: ${{ matrix.runsOn }}
 
     steps:
       - name: Checkout repository
@@ -28,12 +34,12 @@ jobs:
           python-version: '3.13'
 
       - name: Install build dependencies
-        shell: pwsh
         run: |
           python -m pip install --upgrade pip
           python -m pip install pyinstaller pywebview
 
-      - name: Build executable
+      - name: Build executable on Windows
+        if: matrix.osName == 'windows'
         shell: pwsh
         env:
           BUILD_CONFIG: ${{ matrix.config }}
@@ -44,18 +50,67 @@ jobs:
             .\build.ps1
           }
 
-      - name: Package build artifact
+      - name: Build executable on Linux
+        if: matrix.osName == 'linux'
+        shell: bash
+        env:
+          BUILD_CONFIG: ${{ matrix.config }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-0 libgdk-pixbuf2.0-0 libpango-1.0-0 libcairo2
+
+          BUILD_ARGS=(--clean --noconfirm --onedir --name fastroads)
+          if [ "$BUILD_CONFIG" = 'debug' ]; then
+            BUILD_ARGS+=(--debug)
+          else
+            BUILD_ARGS+=(--windowed)
+          fi
+
+          BUILD_ARGS+=(--add-data "index.html:.")
+          BUILD_ARGS+=(--add-data "manifest.json:.")
+          BUILD_ARGS+=(--add-data "favicon_circle.svg:.")
+          BUILD_ARGS+=(--add-data "alea.min.js:.")
+          BUILD_ARGS+=(--add-data "null.html:.")
+          BUILD_ARGS+=(--add-data "static:static")
+
+          if [ -f favicon_circle.ico ]; then
+            BUILD_ARGS+=(--add-data "favicon_circle.ico:.")
+          fi
+
+          for IMPORT in \
+            webview.platforms.edgechromium \
+            webview.platforms.mshtml \
+            webview.platforms.winforms \
+            webview.platforms.cef; do
+            BUILD_ARGS+=(--hidden-import "$IMPORT")
+          done
+
+          BUILD_ARGS+=(--collect-submodules webview)
+          BUILD_ARGS+=(run.py)
+
+          python -m PyInstaller "${BUILD_ARGS[@]}"
+
+      - name: Package build artifact on Windows
+        if: matrix.osName == 'windows'
         shell: pwsh
         run: |
-          $zipFile = "dist/fastroads-${{ matrix.config }}.zip"
+          $zipFile = "dist/fastroads-${{ matrix.osName }}-${{ matrix.config }}.zip"
           Remove-Item -Force -ErrorAction SilentlyContinue $zipFile
           Compress-Archive -Path dist/fastroads/* -DestinationPath $zipFile
+
+      - name: Package build artifact on Linux
+        if: matrix.osName == 'linux'
+        shell: bash
+        run: |
+          cd dist
+          python -m zipfile -c "fastroads-${{ matrix.osName }}-${{ matrix.config }}.zip" fastroads
+          mv "fastroads-${{ matrix.osName }}-${{ matrix.config }}.zip" ..
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: fastroads-${{ matrix.config }}-build
-          path: dist/fastroads-${{ matrix.config }}.zip
+          name: fastroads-${{ matrix.osName }}-${{ matrix.config }}-build
+          path: dist/fastroads-${{ matrix.osName }}-${{ matrix.config }}.zip
 
   release:
     needs: build
@@ -63,17 +118,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download normal build artifact
+      - name: Download Windows normal build
         uses: actions/download-artifact@v4
         with:
-          name: fastroads-normal-build
-          path: release-artifacts/normal
+          name: fastroads-windows-normal-build
+          path: release-artifacts/windows-normal
 
-      - name: Download debug build artifact
+      - name: Download Windows debug build
         uses: actions/download-artifact@v4
         with:
-          name: fastroads-debug-build
-          path: release-artifacts/debug
+          name: fastroads-windows-debug-build
+          path: release-artifacts/windows-debug
+
+      - name: Download Linux normal build
+        uses: actions/download-artifact@v4
+        with:
+          name: fastroads-linux-normal-build
+          path: release-artifacts/linux-normal
+
+      - name: Download Linux debug build
+        uses: actions/download-artifact@v4
+        with:
+          name: fastroads-linux-debug-build
+          path: release-artifacts/linux-debug
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v1
@@ -83,7 +150,9 @@ jobs:
           body: |
             Automated build release for ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || format('main-build-{0}', github.run_number) }}.
           files: |
-            release-artifacts/normal/fastroads-normal.zip
-            release-artifacts/debug/fastroads-debug.zip
+            release-artifacts/windows-normal/fastroads-windows-normal.zip
+            release-artifacts/windows-debug/fastroads-windows-debug.zip
+            release-artifacts/linux-normal/fastroads-linux-normal.zip
+            release-artifacts/linux-debug/fastroads-linux-debug.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
