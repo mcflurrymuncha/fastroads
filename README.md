@@ -9,6 +9,7 @@ This is a modded version of [slowroads.io](slowroads.io) that adds two fast cars
 
 # Running
 ## Python WebView
+You will need [Python](https://www.python.org/downloads/) for this.
 
 A lightweight Python option is included in `run.py`.
 
