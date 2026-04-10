@@ -18,9 +18,16 @@ jobs:
         include:
           - osName: windows
             runsOn: windows-latest
+            config: normal
+          - osName: windows
+            runsOn: windows-latest
+            config: debug
           - osName: linux
             runsOn: ubuntu-latest
-        config: [normal, debug]
+            config: normal
+          - osName: linux
+            runsOn: ubuntu-latest
+            config: debug
 
     runs-on: ${{ matrix.runsOn }}
 
