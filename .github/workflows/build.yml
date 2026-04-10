@@ -104,7 +104,6 @@ jobs:
         run: |
           cd dist
           python -m zipfile -c "fastroads-${{ matrix.osName }}-${{ matrix.config }}.zip" fastroads
-          mv "fastroads-${{ matrix.osName }}-${{ matrix.config }}.zip" ..
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
