@@ -82,7 +82,7 @@ jobs:
           body: |
             Automated build release for ${{ github.ref_name }}.
           files: |
-            release-artifacts/normal/dist/fastroads-normal.zip
-            release-artifacts/debug/dist/fastroads-debug.zip
+            release-artifacts/normal/fastroads-normal.zip
+            release-artifacts/debug/fastroads-debug.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
