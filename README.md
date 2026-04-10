@@ -43,7 +43,7 @@ If `favicon_circle.ico` exists, the Python launcher will use it as the native wi
 From the repo root, run:
 
 ```powershell
-.uild.ps1
+.\build.ps1
 ```
 
 This installs `pyinstaller` if needed and produces a local bundled executable in `dist\run`.
@@ -51,20 +51,29 @@ This installs `pyinstaller` if needed and produces a local bundled executable in
 To build a single-file executable instead, run:
 
 ```powershell
-.uild.ps1 -OneFile
+.\build.ps1 -OneFile
 ```
 
 If the built executable opens but stays blank, build in debug mode so console errors are visible:
 
 ```powershell
-.uild.ps1 -Debug
+.\build.ps1 -Debug
 ```
 
 To clean previous build artifacts:
 
 ```powershell
-.uild.ps1 -Clean
+.\build.ps1 -Clean
 ```
+
+## GitHub Actions
+
+A GitHub Actions workflow is included at `.github/workflows/build.yml`.
+It builds both a normal release and a debug version on every push and pull request to `main`.
+
+The workflow uploads two artifacts:
+- `fastroads-normal-build`
+- `fastroads-debug-build`
 
 # PreBuilt Versions:
 I have included some debug and normal versions of f a s t r o a d s in the release
