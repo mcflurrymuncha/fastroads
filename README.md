@@ -23,7 +23,7 @@
 
 ### New Terrain Generation
 * **Wide:** Generates significantly wider roads for easier high-speed maneuvering.
-* **Straight:** A perfectly flat, straight, and wide road—ideal for top-speed testing.
+* **Straight:** A perfectly flat, straight, and wide road - ideal for top-speed testing.
 
 ### Improved Graphics
 * **Ultra+ Mode:** Significantly increases render distance for a more expansive horizon. 
