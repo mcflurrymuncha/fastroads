@@ -7,24 +7,7 @@ This is a modded version of [slowroads.io](slowroads.io) that adds two fast cars
 - In addition to the three difficulties ("casual", "normal", "hard") there is now "wide" and "straight." "Wide" generates wider roads, and "straight" generates a straight, flat, wide road.
 - There is a graphics option called "ultra+" that increases the render distance. Unfortunately using ultra+ disables tree generation entirely and I'm not sure why.
 
-# Running
-## Python WebView
-You will need [Python](https://www.python.org/downloads/) for this.
-
-A lightweight Python option is included in `run.py`.
-
-Install `pywebview` and start the app from this repo root:
-
-```sh
-python -m pip install pywebview
-python run.py
-```
-
-This starts a local HTTP server and opens the game in a native window.
-
-If `favicon_circle.ico` exists, the Python launcher will use it as the native window icon.
-
-## Build executable
+# Build
 
 From the repo root, run:
 
@@ -51,11 +34,6 @@ To clean previous build artifacts:
 ```powershell
 .\build.ps1 -Clean
 ```
-
-## GitHub Actions
-
-A GitHub Actions workflow is included at `.github/workflows/build.yml`.
-It builds both a normal release and a debug version on every push and pull request to `main`.
 
 When a tag matching `v*` is pushed, the workflow also creates a GitHub release and uploads both zip packages.
 
