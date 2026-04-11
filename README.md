@@ -18,6 +18,7 @@ From the downloaded repo's root, run these in powershell:
 
 This installs `Python` if not installed,  `pyinstaller` and `pywebview` if needed and produces a local bundled executable in `[root]\dist\fastroads`.
 
+## Single-File Version
 To build a single-file executable instead, run:
 
 ```powershell
@@ -25,13 +26,15 @@ To build a single-file executable instead, run:
 ```
 This will make a single .exe file named `fastroads.exe` in `[root]\dist`.
 
+## Debug Version
 If the built executable opens but stays blank, build in debug mode so console errors are visible:
 
 ```powershell
 .\build.ps1 -Debug
 ```
 
-To clean previous build artifacts:
+## Clean Install
+You can make a clean install to remove older versions:
 
 ```powershell
 .\build.ps1 -Clean
