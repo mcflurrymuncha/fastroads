@@ -22,12 +22,6 @@ jobs:
           - osName: windows
             runsOn: windows-latest
             config: debug
-          - osName: linux
-            runsOn: ubuntu-latest
-            config: normal
-          - osName: linux
-            runsOn: ubuntu-latest
-            config: debug
 
     runs-on: ${{ matrix.runsOn }}
 
@@ -105,13 +99,6 @@ jobs:
           Remove-Item -Force -ErrorAction SilentlyContinue $zipFile
           Compress-Archive -Path dist/fastroads/* -DestinationPath $zipFile
 
-      - name: Package build artifact on Linux
-        if: matrix.osName == 'linux'
-        shell: bash
-        run: |
-          cd dist
-          python -m zipfile -c "fastroads-${{ matrix.osName }}-${{ matrix.config }}.zip" fastroads
-
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
@@ -136,18 +123,6 @@ jobs:
           name: fastroads-windows-debug-build
           path: release-artifacts/windows-debug
 
-      - name: Download Linux normal build
-        uses: actions/download-artifact@v4
-        with:
-          name: fastroads-linux-normal-build
-          path: release-artifacts/linux-normal
-
-      - name: Download Linux debug build
-        uses: actions/download-artifact@v4
-        with:
-          name: fastroads-linux-debug-build
-          path: release-artifacts/linux-debug
-
       - name: Create GitHub release
         uses: softprops/action-gh-release@v1
         with:
@@ -158,7 +133,5 @@ jobs:
           files: |
             release-artifacts/windows-normal/fastroads-windows-normal.zip
             release-artifacts/windows-debug/fastroads-windows-debug.zip
-            release-artifacts/linux-normal/fastroads-linux-normal.zip
-            release-artifacts/linux-debug/fastroads-linux-debug.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
