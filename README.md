@@ -16,7 +16,7 @@ From the downloaded repo's root, run these in powershell:
 .\build.ps1
 ```
 
-This installs`Python` if not installed,  `pyinstaller` and `pywebview` if needed and produces a local bundled executable in `[root]\dist\fastroads`.
+This installs `Python` if not installed,  `pyinstaller` and `pywebview` if needed and produces a local bundled executable in `[root]\dist\fastroads`.
 
 To build a single-file executable instead, run:
 
