@@ -3527,7 +3527,7 @@
           (this.cycleLength = Bi[e]), super.set(e);
         }
       })();
-      const Zi = "1.0.1";
+      const Zi = "Release 1.1 (Debug)";
       let Wi = localStorage.getItem("seen-version");
       const Fi = null !== Wi && Wi !== Zi,
         Hi = [
@@ -3536,9 +3536,9 @@
           "Minor UX fixes",
         ],
         Qi = {
-          targetDate: "No set target",
+          targetDate: "Next Week!",
           changes: [
-            "To be determined by popular demand; see Development Plan below",
+            "More Vehicles and maps!",
           ],
         };
       window.localStorage.setItem("seen-version", Zi);
@@ -12383,6 +12383,72 @@
               },
             },
           },
+          SuperBus: {
+            enabled: !0,
+            name: "Rocket Coach",
+            skins: [],
+            bodyObj: i(38),
+            wheelObj: i(39),
+            icon: gr,
+            audio: { roll: cr, engine: pr },
+            wheels: {
+              tyreWidth: 0.2,
+              width: 2.24,
+              length: 5.47,
+              radius: 0.3955,
+              circumference: 2.485,
+              travel: 0.16,
+            },
+            metrics: {
+              shadowMapSize: 8,
+              steerSpeed: 0.45,
+              accel: 60000000000000000000000000000,
+              reverse: 500000000000000000,
+              jerk: 6,
+              brake: 400000000000000000000,
+              mass: 1400,
+              steerAccel: 6,
+              maxSteer: 0.65,
+              axleHeight: 0.3955,
+              dampening: 0.06,
+              rockFactor: 5,
+              drag: 0.002,
+              topSpeed: 3200000000000000000000000000000000000000000000,
+              rollResistance: 0.03,
+              steerInterval: 2,
+              slipBase: 1,
+              slipMod: 0.25,
+              aeroFactor: 0,
+              headlightPos: { x: 0.75, y: 0.75, z: 7.25 },
+            },
+            cameras: {
+              Chase: {
+                pitch: { near: 0.35, far: 0.3 },
+                yOffset: { near: 1.6, far: 2.6 },
+                posOffset: [0, 0, 2.7],
+                range: { near: 9, far: 11 },
+                farSpeed: 30,
+                smoothFactor: 1.6,
+              },
+              ChaseFar: {
+                pitch: { near: 0.4, far: 0.3 },
+                yOffset: { near: 2, far: 4 },
+                posOffset: [0, 0, 2.7],
+                range: { near: 14, far: 16 },
+                farSpeed: 30,
+                smoothFactor: 1.4,
+              },
+              FirstPerson: {
+                pitch: { near: 0.05, far: 0.05 },
+                yOffset: { near: 1.8, far: 1.8 },
+                posOffset: [0, 0, 6.6],
+                range: { near: 0.75, far: 0.75 },
+                farSpeed: 30,
+                smoothFactor: 0.4,
+                hideVehicle: !0,
+              },
+            },
+          },
           Roadster: {
             enabled: !0,
             name: "Roadster",
@@ -12426,7 +12492,7 @@
           },
           Lambo: {
             enabled: !0,
-            name: "Lambo",
+            name: "Lamborghini Huracan",
             bodyObj: i(40),
             wheelObj: i(41),
             map: mr,
@@ -12467,7 +12533,7 @@
           },
           Supercar: {
             enabled: !0,
-            name: "Supercar",
+            name: "Rocket Car",
             bodyObj: i(40),
             wheelObj: i(41),
             map: mr,
@@ -12485,10 +12551,10 @@
             metrics: {
               shadowMapSize: 4,
               steerSpeed: 3.0,
-              accel: 1500,
-              reverse: 200,
+              accel: 150000000000000000000,
+              reverse: 20000000000000,
               jerk: 80,
-              brake: 150,
+              brake: 1500000000000,
               mass: 1400,
               steerAccel: 40,
               maxSteer: 0.68,
@@ -12496,7 +12562,7 @@
               dampening: 0.04,
               rockFactor: 4,
               drag: 0.0001,
-              topSpeed: 50000,
+              topSpeed: 500000000000000000000000000000000,
               rollResistance: 0.06,
               steerInterval: 1,
               slipBase: 0.1,
@@ -12507,8 +12573,8 @@
             cameras: xr,
           },
           Rover: {
-            enabled: !1,
-            name: "Rover",
+            enabled: !0,
+            name: "Rover (Beta)",
             skins: [],
             bodyObj: i(14),
             wheelObj: i(15),
@@ -12554,6 +12620,8 @@
           Coach: vehicles.Bus,
           Lambo: vehicles.Lambo,
           Supercar: vehicles.Supercar,
+          Rover: vehicles.Rover,
+          SuperBus: vehicles.SuperBus,
         },
         br = 1,
         fr = 2;
@@ -19435,7 +19503,7 @@
                         id: "splash-anslo-img",
                         alt: "",
                       }),
-                      Object(Ul.jsx)("div", { children: "from anslo.dev" }),
+                      Object(Ul.jsx)("div", { children: "from vexi (and anslo.dev <3)" }),
                     ],
                   }),
                   Object(Ul.jsx)("div", { id: "splash-logo-placeholder" }),
@@ -19446,11 +19514,11 @@
                   }),
                   Object(Ul.jsx)("div", {
                     id: "splash-header",
-                    children: "slow roads",
+                    children: "fast roads",
                   }),
                   Object(Ul.jsx)("div", {
                     id: "splash-subheader",
-                    children: "endless driving zen",
+                    children: "Version 1.1 - Debug",
                   }),
                   t
                     ? Object(Ul.jsx)(_l, {
@@ -19472,7 +19540,7 @@
                         children: [
                           Object(Ul.jsx)("div", {
                             id: "donate-please",
-                            children: "donations keep the game running!",
+                            children: "donate the original creator of 'slow roads'! ",
                           }),
                           Object(Ul.jsxs)("a", {
                             id: "donate",
@@ -19519,12 +19587,12 @@
                           className: "splash-about",
                           children: [
                             Object(Ul.jsx)("strong", {
-                              children: "Slow Roads",
+                              children: "Fast Roads",
                             }),
                             " is a casual, procedurally-generated driving game which lets you disconnect from life for a while and run endlessly toward the distant horizon. Set the scenery to suit your mood, throw on some music, and",
                             Object(Ul.jsx)("br", {}),
                             Object(Ul.jsx)("strong", {
-                              children: "just drive",
+                              children: "just drive - now with absurdy fast bullshit physics!",
                             }),
                             ".",
                           ],
@@ -19719,7 +19787,7 @@
                         className: "splash-topo-divider",
                         children: Object(Ul.jsx)("div", {
                           className: "splash-topo-header",
-                          children: "Archived Versions",
+                          children: "Archived Versions of Slow Roads (Original Version)",
                         }),
                       }),
                       Object(Ul.jsx)("div", {
@@ -21558,7 +21626,7 @@
       });
       i(47);
       const Ac = {
-        edge: { title: "The Edge", body: '"What did you expect?"' },
+        edge: { title: "the map no load no more", body: 'what the fuck did you do bro' },
       };
       var mc = () => {
         const [e, t] = Object(s.useState)(null),
@@ -21597,7 +21665,7 @@
                   }),
                   Object(Ul.jsx)("div", {
                     id: "achievement-unlocked",
-                    children: "achievement unlocked",
+                    children: "uh u did somethin",
                   }),
                 ],
               }),
