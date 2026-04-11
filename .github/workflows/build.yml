@@ -1,4 +1,4 @@
-name: Build f a s t  r o a d s executables
+name: Build and Release
 
 on:
   push:
