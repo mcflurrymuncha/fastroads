@@ -28,7 +28,7 @@
 ### Improved Graphics
 * **Ultra+ Mode:** Significantly increases render distance for a more expansive horizon. 
 > [!IMPORTANT]
-> Enabling **Ultra+** currently disables tree generation entirely.
+> Enabling **Ultra+** currently disables tree generation entirely. I'm not sure why though.
 
 ---
 
