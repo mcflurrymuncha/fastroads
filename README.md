@@ -9,13 +9,13 @@ This is a modded version of [slowroads.io](slowroads.io) that adds two fast cars
 
 # Build
 
-From the repo root, run:
+From the repo root, run these in powershell:
 
 ```powershell
 .\build.ps1
 ```
 
-This installs `pyinstaller` if needed and produces a local bundled executable in `dist\fastroads`.
+This installs `pyinstaller` and `pywebview` if needed and produces a local bundled executable in `dist\fastroads`.
 
 To build a single-file executable instead, run:
 
@@ -35,10 +35,6 @@ To clean previous build artifacts:
 .\build.ps1 -Clean
 ```
 
-When a tag matching `v*` is pushed, the workflow also creates a GitHub release and uploads both zip packages.
-
-The workflow uploads two artifacts for each build run:
-- `fastroads-normal-build`
-- `fastroads-debug-build`
+A Prebuilt Version is also available in [Releases](https://github.com/mcflurrymuncha/fastroads/releases/tag/v1.1)
 
 
