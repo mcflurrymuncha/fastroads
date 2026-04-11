@@ -65,4 +65,9 @@ To make a Single .exe file of the game with no `_internal` folder, Run this:
 ### Web Version
 The Web Version is available at the top of this repo <3
 
-- mcflurry :3
+## The Funny Bug that i am not removing
+There is a particular bug that i find very funny with the `Supercar`. 
+It occurs when you go above 1,000 mph then break.
+As you hit the floor you break and accelerate again, sending the car flying.
+I will not be removing this and have a name for it:
+**breakboosting**
