@@ -2,7 +2,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/github/downloads/mcflurrymuncha/fastroads/total?style=for-the-badge&color=blue" alt="Downloads">
-  <img src="https://img.shields.io/github/v/release/mcflurrymuncha/fastroads?style=for-the-badge&color=green" alt="Release">
+  <img src="https://img.shields.io/github/v/release/mcflurrymuncha/fastroads?style=for-the-badge&color=pink" alt="Release">
   <a href="https://mcflurrymuncha.github.io/fastroads/">
     <img src="https://img.shields.io/badge/Play-Web%20Version-orange?style=for-the-badge" alt="Play Web Version">
   </a>
