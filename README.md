@@ -1,4 +1,4 @@
-# f a s t  r o a d s (Desktop Edition)
+# f a s t  r o a d s (V2)
 f a s t  r o a d s (or fastroads / Fast Roads) is a Modified version of [slow roads](https://www.slowroads.io). It has many new additions:
 
 - There is now a "Lamborghini" that can reach speeds of about 363 mph. It looks the same as the roadster and doesn't handle too well but it's fun
