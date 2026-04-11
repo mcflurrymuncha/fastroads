@@ -2,16 +2,12 @@ name: Build fastroads v2
 
 on:
   push:
-    branches:
-      - main
-    tags:
-      - 'v*'
+    branches: [main]
+    tags: ['v*']
   pull_request:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
-# Added permissions to allow the GITHUB_TOKEN to create releases
 permissions:
   contents: write
 
@@ -26,6 +22,9 @@ jobs:
           - osName: windows
             runsOn: windows-latest
             config: debug
+          - osName: windows
+            runsOn: windows-latest
+            config: onefile
 
     runs-on: ${{ matrix.runsOn }}
 
@@ -34,64 +33,65 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
+          python-version: '3.12' # Recommended for stability with PyInstaller
 
       - name: Install build dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install pyinstaller pywebview
 
-      - name: Build executable on Windows
-        if: matrix.osName == 'windows'
+      - name: Build executable
         shell: pwsh
-        env:
-          BUILD_CONFIG: ${{ matrix.config }}
         run: |
-          if ($env:BUILD_CONFIG -eq 'debug') {
+          if ("${{ matrix.config }}" -eq "debug") {
             .\build.ps1 -Debug
+          } elseif ("${{ matrix.config }}" -eq "onefile") {
+            .\build.ps1 -OneFile
           } else {
             .\build.ps1
           }
 
-      - name: Package build artifact on Windows
-        if: matrix.osName == 'windows'
+      - name: Package build artifact
         shell: pwsh
         run: |
-          # Ensure dist folder exists
-          if (!(Test-Path dist)) { New-Item -ItemType Directory -Path dist }
-          $zipFile = "dist/fastroads-${{ matrix.osName }}-${{ matrix.config }}.zip"
-          Remove-Item -Force -ErrorAction SilentlyContinue $zipFile
-          Compress-Archive -Path dist/fastroads/* -DestinationPath $zipFile
+          $artifactPath = "dist/fastroads-${{ matrix.config }}.zip"
+          # Logic to handle folder build vs single file build
+          if ("${{ matrix.config }}" -eq "onefile") {
+             # OneFile usually puts the .exe directly in dist/
+             Compress-Archive -Path dist/*.exe -DestinationPath $artifactPath
+          } else {
+             # Normal/Debug puts files in dist/fastroads/
+             Compress-Archive -Path dist/fastroads/* -DestinationPath $artifactPath
+          }
+          echo "ZIP_PATH=$artifactPath" >> $env:GITHUB_ENV
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: fastroads-${{ matrix.osName }}-${{ matrix.config }}
-          path: dist/fastroads-${{ matrix.osName }}-${{ matrix.config }}.zip
+          path: ${{ env.ZIP_PATH }}
 
   release:
     needs: build
-    # Only run on pushes to main, tags, or manual dispatch
-    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: release-artifacts
+          merge-multiple: true # Flattens the folder structure for easier release
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: "${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || format('v{0}', github.run_number) }}"
-          name: "${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || format('V{0}', github.run_number) }}"
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || format('v2.0.{0}', github.run_number) }}
+          name: ${{ github.ref_type == 'tag' && github.ref_name || format('Build v2.0.{0}', github.run_number) }}
           body: |
-            Automated build release for ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || format('main-build-{0}', github.run_number) }}.
-          # Using recursive globbing to find all zips regardless of the artifact folder structure
-          files: |
-            release-artifacts/**/*.zip
+            Automated build for Fast Roads V2.
+            Config: Normal, Debug, and One-File included.
+          files: release-artifacts/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
