@@ -39,3 +39,30 @@ To build the Windows executable, you will need **Python**, **PowerShell**, and a
 Open PowerShell in the root directory and run:
 ```powershell
 .\build.ps1
+```
+This will install `pyinstaller` and `pywebview` (as this game is html based).
+
+### Debug Version
+Run the same command but add this:
+```powershell
+.\build.ps1 -debug
+```
+
+This will make the game open with a terminal window to show what goes wrong and what is happening in game.
+
+### Clean Install
+Run this command to make a completely new install of **fastroads**.
+```powershell
+.\build.ps1 -clean
+```
+
+### One-File
+To make a Single .exe file of the game with no `_internal` folder, Run this:
+```powershell
+.\build.ps1 -onefile
+```
+
+### Web Version
+The Web Version is available at the top of this repo <3
+
+- mcflurry :3
