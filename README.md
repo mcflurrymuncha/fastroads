@@ -10,16 +10,16 @@
 
 ---
 
-**Fast Roads** (or *fastroads*) is a high-octane modification of the original [Slow Roads](https://www.slowroads.io). While the original focused on the zen of driving, V2 focuses on breaking the sound barrier.
+**Fast Roads** (or *fastroads*) is a modification of the original [Slow Roads](https://www.slowroads.io). While the original focused on the zen of driving, V2 focuses on breaking the sound barrier.
 
 ## 🚀 Key Features
 
 ### New Vehicles
 | Vehicle | Top Speed | Handling | Notes |
 | :--- | :--- | :--- | :--- |
-| **Lamborghini** | ~363 mph | Low | Uses the Roadster model; pure speed. |
-| **Supercar** | ~60,000 mph | Chaotic | For those who find light speed too slow. |
-| **Superbus** | ~30,000 mph | Heavy | Uses the Coach model; massive momentum. |
+| **Lamborghini** | ~363 mph | Low | Uses the Roadster model; higher speed. |
+| **Supercar** | ~60,000 mph | Chaotic | just a bit fast lowk |
+| **Superbus** | ~30,000 mph | Heavy | Uses the Coach model; speed. |
 
 ### New Terrain Generation
 * **Wide:** Generates significantly wider roads for easier high-speed maneuvering.
