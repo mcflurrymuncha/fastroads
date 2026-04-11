@@ -51,46 +51,6 @@ jobs:
             .\build.ps1
           }
 
-      - name: Build executable on Linux
-        if: matrix.osName == 'linux'
-        shell: bash
-        env:
-          BUILD_CONFIG: ${{ matrix.config }}
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-0 libgdk-pixbuf2.0-0 libpango-1.0-0 libcairo2
-
-          BUILD_ARGS=(--clean --noconfirm --onedir --name fastroads)
-          if [ "$BUILD_CONFIG" = 'debug' ]; then
-            BUILD_ARGS+=(--debug)
-          else
-            BUILD_ARGS+=(--windowed)
-          fi
-
-          BUILD_ARGS+=(--add-data "index.html:.")
-          BUILD_ARGS+=(--add-data "manifest.json:.")
-          BUILD_ARGS+=(--add-data "favicon_circle.svg:.")
-          BUILD_ARGS+=(--add-data "alea.min.js:.")
-          BUILD_ARGS+=(--add-data "null.html:.")
-          BUILD_ARGS+=(--add-data "static:static")
-
-          if [ -f favicon_circle.ico ]; then
-            BUILD_ARGS+=(--add-data "favicon_circle.ico:.")
-          fi
-
-          for IMPORT in \
-            webview.platforms.edgechromium \
-            webview.platforms.mshtml \
-            webview.platforms.winforms \
-            webview.platforms.cef; do
-            BUILD_ARGS+=(--hidden-import "$IMPORT")
-          done
-
-          BUILD_ARGS+=(--collect-submodules webview)
-          BUILD_ARGS+=(run.py)
-
-          python -m PyInstaller "${BUILD_ARGS[@]}"
-
       - name: Package build artifact on Windows
         if: matrix.osName == 'windows'
         shell: pwsh
