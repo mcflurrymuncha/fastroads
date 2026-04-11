@@ -1,49 +1,41 @@
-# f a s t  r o a d s (V2)
-f a s t  r o a d s (or fastroads / Fast Roads) is a Modified version of [slow roads](https://www.slowroads.io). It has many new additions:
+# <p align="center">f a s t &nbsp; r o a d s &nbsp; (V2)</p>
 
-- There is now a "Lamborghini" that can reach speeds of about 363 mph. It looks the same as the roadster and doesn't handle too well but it's fun
-- There is a "Supercar" that can reach speeds up to about 60000 mph. It looks like the roadster as well and handles as well as a 60000 mph car can
-- In addition to the three maps ("casual", "normal", "hard") there is now "wide" and "straight." "Wide" generates wider roads, and "straight" generates a straight, flat, wide road.
-- There is a graphics option called "ultra+" that increases the render distance. Unfortunately using ultra+ disables tree generation entirely and I'm not sure why.
-- There is a "Superbus" that can reach speeds of about 30000 mph. it uses the same model as the Coach.
+<p align="center">
+  <img src="https://img.shields.io/github/downloads/mcflurrymuncha/fastroads/total?style=for-the-badge&color=blue" alt="Downloads">
+  <img src="https://img.shields.io/github/v/release/mcflurrymuncha/fastroads?style=for-the-badge&color=green" alt="Release">
+  <a href="https://mcflurrymuncha.github.io/fastroads/">
+    <img src="https://img.shields.io/badge/Play-Web%20Version-orange?style=for-the-badge" alt="Play Web Version">
+  </a>
+</p>
 
-# Build
-To Build the game for Windows, You will Need Python, Powershell and a copy of this Repo locally saved to your Computer.
+---
 
-From the downloaded repo's root, run these in powershell:
+**Fast Roads** (or *fastroads*) is a high-octane modification of the original [Slow Roads](https://www.slowroads.io). While the original focused on the zen of driving, V2 focuses on breaking the sound barrier.
 
+## 🚀 Key Features
+
+### New Vehicles
+| Vehicle | Top Speed | Handling | Notes |
+| :--- | :--- | :--- | :--- |
+| **Lamborghini** | ~363 mph | Low | Uses the Roadster model; pure speed. |
+| **Supercar** | ~60,000 mph | Chaotic | For those who find light speed too slow. |
+| **Superbus** | ~30,000 mph | Heavy | Uses the Coach model; massive momentum. |
+
+### New Terrain Generation
+* **Wide:** Generates significantly wider roads for easier high-speed maneuvering.
+* **Straight:** A perfectly flat, straight, and wide road—ideal for top-speed testing.
+
+### Improved Graphics
+* **Ultra+ Mode:** Significantly increases render distance for a more expansive horizon. 
+> [!IMPORTANT]
+> Enabling **Ultra+** currently disables tree generation entirely.
+
+---
+
+## 🛠️ Building from Source
+To build the Windows executable, you will need **Python**, **PowerShell**, and a local copy of this repository.
+
+### Quick Start
+Open PowerShell in the root directory and run:
 ```powershell
 .\build.ps1
-```
-
-This installs `Python` if not installed,  `pyinstaller` and `pywebview` if needed and produces a local bundled executable in `[root]\dist\fastroads`.
-
-## Single-File Version
-To build a single-file executable instead, run:
-
-```powershell
-.\build.ps1 -OneFile
-```
-This will make a single .exe file named `fastroads.exe` in `[root]\dist`.
-
-## Debug Version
-If the built executable opens but stays blank, build in debug mode so console errors are visible:
-
-```powershell
-.\build.ps1 -Debug
-```
-
-## Clean Install
-You can make a clean install to remove older versions:
-
-```powershell
-.\build.ps1 -Clean
-```
-
-## Prebuilt Version:
-A Prebuilt version can be found in Releases.
-
-## Web Version
-The Web Version is located here: [fastroads](https://mcflurrymuncha.github.io/fastroads/)
-
-
