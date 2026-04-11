@@ -12,7 +12,7 @@
 
 **Fast Roads** (or *fastroads*) is a modification of the original [Slow Roads](https://www.slowroads.io). While the original focused on the zen of driving, V2 focuses on breaking the sound barrier.
 
-## 🚀 Key Features
+## Key Features
 
 ### New Vehicles
 | Vehicle | Top Speed | Handling | Notes |
