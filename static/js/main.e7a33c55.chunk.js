@@ -3527,7 +3527,7 @@
           (this.cycleLength = Bi[e]), super.set(e);
         }
       })();
-      const Zi = "Release 1.1 (Debug)";
+      const Zi = "Release v2.0.44 Bugfix";
       let Wi = localStorage.getItem("seen-version");
       const Fi = null !== Wi && Wi !== Zi,
         Hi = [
@@ -19462,7 +19462,7 @@
                 alt: "",
               }),
               Object(Ul.jsx)("br", {}),
-              "Apologies, this project is not yet supported on mobile devices as it requires a hardware keyboard.",
+              "Apologies, this project is not yet supported on mobile devices as it requires a physical keyboard.",
               Object(Ul.jsx)("br", {}),
               Object(Ul.jsx)("br", {}),
               "If you're not on a mobile device, please disregard this message and click below to force a reload.",
@@ -19518,7 +19518,7 @@
                   }),
                   Object(Ul.jsx)("div", {
                     id: "splash-subheader",
-                    children: "Version 1.1 - Debug",
+                    children: "Version 2.0",
                   }),
                   t
                     ? Object(Ul.jsx)(_l, {
