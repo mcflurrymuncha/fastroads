@@ -19413,8 +19413,8 @@
               Object(Ul.jsxs)("div", {
                 id: "splash-feedback-prompt",
                 children: [
-                  "Please use the feedback form to let me know what you think!",
-              }),
+                  "Please use the feedback form to let me know what you think!"
+               }),
               Object(Ul.jsx)("hr", {
                 style: { borderColor: "#fff", opacity: 0.1 },
               }),
