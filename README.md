@@ -5,11 +5,11 @@
   <img src="https://img.shields.io/github/v/release/mcflurrymuncha/fastroads?style=for-the-badge&color=pink" alt="Release">
   <a href="https://mcflurrymuncha.github.io/fastroads/">
     <img src="https://img.shields.io/badge/Play-Web%20Version-orange?style=for-the-badge" alt="Play Web Version">
-    <a href="https://mcflurrymuncha.itch.io/fastroads">
-    <img src="https://img.shields.io/badge/Play-Web%20V?style=for-the-badge&color=pink" alt="Play on itch.io">
+  </a>
+  <a href="https://mcflurrymuncha.itch.io/fastroads">
+    <img src="https://img.shields.io/badge/itch.io-FA5C5C?style=for-the-badge&logo=itch.io&logoColor=white" alt="Play on itch.io">
   </a>
 </p>
-
 ---
 
 **Fast Roads** (or *fastroads*) is a modification of the original [Slow Roads](https://www.slowroads.io). While the original focused on the zen of driving, V2 focuses on breaking the sound barrier.
