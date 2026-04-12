@@ -19624,36 +19624,11 @@
                         children: Object(Ul.jsxs)("div", {
                           className: "splash-about-text",
                           children: [
-                            "After 16 months of full-time development, the initial goals",
+                            "hi",
                             Object(Ul.jsx)("div", {
                               className: "splash-about-title",
                               children: "Potential Future Features:",
                             }),
-                            Object(Ul.jsx)("br", {}),
-                            Object(Ul.jsxs)("div", {
-                              style: { marginLeft: "16px" },
-                              children: [
-                                "- Support for controllers and wheels ",
-                                Object(Ul.jsx)("br", {}),
-                                "- More locations (particularly off-road), skins, and weathers ",
-                                Object(Ul.jsx)("br", {}),
-                                "- More vehicle types ",
-                                Object(Ul.jsx)("br", {}),
-                                "- Improved weather effects (rain, snow, fog, wind) ",
-                                Object(Ul.jsx)("br", {}),
-                                "- Improved lighting and shadows ",
-                                Object(Ul.jsx)("br", {}),
-                                "- Competitive modes and global leaderboards for furthest distance, fastest mile, etc. ",
-                                Object(Ul.jsx)("br", {}),
-                                "- Further optimisation for lower-end systems ",
-                                Object(Ul.jsx)("br", {}),
-                                "- Improved environmental detail and effects (birds, buildings, structures, cows...) ",
-                                Object(Ul.jsx)("br", {}),
-                              ],
-                            },
-                          ],
-                        }),
-                      }),
                       Object(Ul.jsx)("div", {
                         className: "splash-topo-divider",
                         children: Object(Ul.jsx)("div", {
