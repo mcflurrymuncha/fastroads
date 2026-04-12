@@ -3527,7 +3527,7 @@
           (this.cycleLength = Bi[e]), super.set(e);
         }
       })();
-      const Zi = "Release v2.0.45";
+      const Zi = "Release 1.1 (Debug)";
       let Wi = localStorage.getItem("seen-version");
       const Fi = null !== Wi && Wi !== Zi,
         Hi = [
@@ -19410,6 +19410,17 @@
                   })
                 ),
               }),
+              Object(Ul.jsxs)("div", {
+                id: "splash-feedback-prompt",
+                children: [
+                  "Please use the feedback form to let me know what you think, or ",
+                  Object(Ul.jsx)("a", {
+                    href: "https://discord.gg/s8XPAAj",
+                    children: "join the discord",
+                  }),
+                  " and tell me personally!",
+                ],
+              }),
               Object(Ul.jsx)("hr", {
                 style: { borderColor: "#fff", opacity: 0.1 },
               }),
@@ -19451,7 +19462,7 @@
                 alt: "",
               }),
               Object(Ul.jsx)("br", {}),
-              "Apologies, this project is not yet supported on mobile devices as it requires a physical keyboard.",
+              "Apologies, this project is not yet supported on mobile devices as it requires a hardware keyboard.",
               Object(Ul.jsx)("br", {}),
               Object(Ul.jsx)("br", {}),
               "If you're not on a mobile device, please disregard this message and click below to force a reload.",
@@ -19507,7 +19518,7 @@
                   }),
                   Object(Ul.jsx)("div", {
                     id: "splash-subheader",
-                    children: "Version 2.0",
+                    children: "Version 1.1 - Debug",
                   }),
                   t
                     ? Object(Ul.jsx)(_l, {
@@ -19520,6 +19531,41 @@
                     id: "splash-about",
                     href: "#about",
                     children: ["about", Object(Ul.jsx)("br", {}), "\u25be"],
+                  }),
+                  Object(Ul.jsxs)("div", {
+                    id: "splash-footer",
+                    children: [
+                      Object(Ul.jsxs)("div", {
+                        className: "splash-footer-link",
+                        children: [
+                          Object(Ul.jsx)("div", {
+                            id: "donate-please",
+                            children: "donate the original creator of 'slow roads'! ",
+                          }),
+                          Object(Ul.jsxs)("a", {
+                            id: "donate",
+                            href: "https://ko-fi.com/slowroads",
+                            target: "_blank",
+                            rel: "noopener noreferrer",
+                            children: [
+                              "donate",
+                              Object(Ul.jsx)("span", { className: "outlink" }),
+                            ],
+                          }),
+                        ],
+                      }),
+                      Object(Ul.jsx)("div", {
+                        className: "splash-footer-link",
+                        children: Object(Ul.jsxs)("a", {
+                          className: "splash-link",
+                          href: "https://discord.gg/s8XPAAj",
+                          children: [
+                            "discord",
+                            Object(Ul.jsx)("span", { className: "outlink" }),
+                          ],
+                        }),
+                      }),
+                    ],
                   }),
                 ],
               }),
@@ -19624,11 +19670,63 @@
                         children: Object(Ul.jsxs)("div", {
                           className: "splash-about-text",
                           children: [
-                            "hi",
+                            "After 16 months of full-time development, the initial goals for this project have been fulfilled, and so I'm considering it to be complete. That said, there are many features which didn't make the priority list for version 1. If there is interest, I would love to continue developing these features into the future.",
+                            Object(Ul.jsx)("br", {}),
+                            Object(Ul.jsx)("br", {}),
+                            "I'm committed to keeping Slow Roads freely available and free from adverts, but I don't have the financial capacity to keep the servers running by myself. If you would like to keep the game alive, a kind ",
+                            Object(Ul.jsx)("a", {
+                              className: "about-link",
+                              href: "https://ko-fi.com/slowroads",
+                              target: "_blank",
+                              rel: "noopener noreferrer",
+                              children: "donation",
+                            }),
+                            " would be greatly appreciated. Let me know which of the features below you would like to see most!",
+                            Object(Ul.jsx)("br", {}),
+                            Object(Ul.jsx)("br", {}),
                             Object(Ul.jsx)("div", {
                               className: "splash-about-title",
                               children: "Potential Future Features:",
                             }),
+                            Object(Ul.jsx)("br", {}),
+                            Object(Ul.jsxs)("div", {
+                              style: { marginLeft: "16px" },
+                              children: [
+                                "- Support for controllers and wheels ",
+                                Object(Ul.jsx)("br", {}),
+                                "- More locations (particularly off-road), skins, and weathers ",
+                                Object(Ul.jsx)("br", {}),
+                                "- More vehicle types ",
+                                Object(Ul.jsx)("br", {}),
+                                "- Improved weather effects (rain, snow, fog, wind) ",
+                                Object(Ul.jsx)("br", {}),
+                                "- Improved lighting and shadows ",
+                                Object(Ul.jsx)("br", {}),
+                                "- Competitive modes and global leaderboards for furthest distance, fastest mile, etc. ",
+                                Object(Ul.jsx)("br", {}),
+                                "- Further optimisation for lower-end systems ",
+                                Object(Ul.jsx)("br", {}),
+                                "- Improved environmental detail and effects (birds, buildings, structures, cows...) ",
+                                Object(Ul.jsx)("br", {}),
+                              ],
+                            }),
+                            Object(Ul.jsx)("br", {}),
+                            "Join the ",
+                            Object(Ul.jsx)("a", {
+                              className: "about-link",
+                              href: "https://discord.gg/t2UWVKcy3z",
+                              children: "discord server",
+                            }),
+                            " to suggest new ideas. Supporters on ",
+                            Object(Ul.jsx)("a", {
+                              className: "about-link",
+                              href: "https://ko-fi.com/slowroads",
+                              children: "ko-fi",
+                            }),
+                            " get early access and priority requests!",
+                          ],
+                        }),
+                      }),
                       Object(Ul.jsx)("div", {
                         className: "splash-topo-divider",
                         children: Object(Ul.jsx)("div", {
