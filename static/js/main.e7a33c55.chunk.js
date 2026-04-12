@@ -3527,16 +3527,14 @@
           (this.cycleLength = Bi[e]), super.set(e);
         }
       })();
-      const Zi = "Release 1.1 (Debug)";
+      const Zi = "Version 2.0.56";
       let Wi = localStorage.getItem("seen-version");
       const Fi = null !== Wi && Wi !== Zi,
         Hi = [
-          "Optimisations to lower server costs",
-          "AZERTY keyboards now supported",
-          "Minor UX fixes",
+          "2-3 Years Dagestan and forget",
         ],
         Qi = {
-          targetDate: "Next Week!",
+          targetDate: "Thursday",
           changes: [
             "More Vehicles and maps!",
           ],
@@ -19518,7 +19516,7 @@
                   }),
                   Object(Ul.jsx)("div", {
                     id: "splash-subheader",
-                    children: "Version 1.1 - Debug",
+                    children: "Version 2.0 - Refresh",
                   }),
                   t
                     ? Object(Ul.jsx)(_l, {
