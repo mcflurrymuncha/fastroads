@@ -13,7 +13,7 @@ try:
     import webview
 except ImportError:
     raise SystemExit(
-        "pywebview is not installed. Install it with: python -m pip install pywebview"
+        "[fastroadsinstall error] pywebview is not installed. Install it with: python -m pip install pywebview"
     )
 
 ROOT = Path(__file__).resolve().parent
@@ -58,7 +58,7 @@ def main() -> None:
 
     print(f"Serving {ROOT} at {url}")
     webview.create_window(
-        "f a s t r o a d s - Beta",
+        "f a s t  r o a d s",
         url,
         width=1280,
         height=800,
