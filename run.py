@@ -11,6 +11,7 @@ import time
 import pypresence
 from pathlib import Path
 
+print("f a s t  r o a d s v23-beta (DiscordRPC Test)")
 try:
     import webview
 except ImportError:
