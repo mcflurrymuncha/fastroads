@@ -9,7 +9,6 @@ import threading
 import urllib.parse
 import time
 import pypresence
-import pypresence-arRPC
 from pathlib import Path
 
 try:
@@ -62,28 +61,37 @@ def start_server(port: int) -> http.server.HTTPServer:
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     return server
+import time
+
+try:
+    from pypresence import Presence
+except ImportError:
+    Presence = None
 
 
-def start_discord_rpc():
+def start_rpc():
+    if Presence is None:
+        print("[RPC] pypresence not installed, skipping RPC")
+        return None
+
     try:
         rpc = Presence(DISCORD_CLIENT_ID)
         rpc.connect()
 
         rpc.update(
-            details="Playing testgame",
-            state="By vexi",
-            # large_image="logo",    upload in Discord developer portal
-            large_text="f a s t  r o a d s",
+            details="Playing Fastroads",
+            state="In Game",
+            large_image="logo",
+            large_text="Fastroads",
             start=int(time.time())
         )
 
-        print("Discord RPC connected.")
+        print("[RPC] Connected (Discord or arRPC)")
         return rpc
 
     except Exception as e:
-        print("Discord RPC failed:", e)
+        print("[RPC] Not available:", e)
         return None
-
 
 def main() -> None:
     port = find_free_port()
