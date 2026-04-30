@@ -47,7 +47,7 @@ def log_exception():
 
 HOST = "127.0.0.1"
 ICO_PATH = ROOT / "favicon_circle.ico"
-DISCORD_CLIENT_ID = "1"
+DISCORD_CLIENT_ID = "1499447238923915274"
 
 
 def load_icon_path():
