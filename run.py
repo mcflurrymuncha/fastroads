@@ -8,6 +8,8 @@ import socketserver
 import threading
 import urllib.parse
 import time
+import pypresence
+import pypresence-arRPC
 from pathlib import Path
 
 try:
