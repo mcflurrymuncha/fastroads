@@ -1,57 +1,162 @@
-/**
- * Discord Rich Presence Integration for fastroads
- * Based on main.e7a33c55.chunk.js
- */
+// NOTE: you may have to run this after onload
+(() => {
+let Dispatcher, lookupAsset, lookupApp, apps = {};
 
-const RPC = require('discord-rpc');
-const clientId = '1'; // Replace with your Application ID from Discord Dev Portal
-const client = new RPC.Client({ transport: 'ipc' });
+const eachCandidate = (mod, fn) => {
+  if (!mod) return;
 
-// Function to pull data from the game objects
-const updatePresence = () => {
-    // Check if the game objects are available in the window context
-    if (!window.game || !window.z) return;
-
-    const game = window.game;
-    const car = window.z;
-    
-    // 1. Determine Status: Driving or Paused
-    const status = game.paused ? "Paused" : "Driving";
-
-    // 2. Get Vehicle Details
-    // The 'z' object (Car class) contains vehicle metrics
-    const carName = car.metrics ? car.metrics.name : "Unknown Vehicle";
-
-    // 3. Calculate Speed (Game uses m/s, convert to km/h or mph)
-    const speedKmh = Math.round(car.speed * 3.6);
-
-    // 4. Track Session Time
-    // game.startTime is the unix timestamp when the app launched
-    const startTime = game.startTime;
-
-    client.setActivity({
-        details: `${status}: ${carName}`,
-        state: game.paused ? "In Menus" : `fastroads`,
-        startTimestamp: startTime,
-        largeImageKey: 'game_logo_large', // Must match Discord Dev Portal assets
-        largeImageText: `Game ${window.Zi}`, // Zi is the version constant
-        smallImageKey: game.paused ? 'icon_pause' : 'icon_drive',
-        instance: false,
-    });
+  try { fn(mod); } catch {}
+  try { if (mod.default) fn(mod.default); } catch {}
+  try {
+    for (const key of Reflect.ownKeys(mod)) {
+      try { fn(mod[key]); } catch {}
+    }
+  } catch {}
 };
 
-client.on('ready', () => {
-    console.log('Discord Rich Presence is active.');
-    
-    // Update every 15 seconds to respect Discord rate limits
-    setInterval(() => {
-        updatePresence();
-    }, 15000);
+const getWebpackRequire = () => {
+  const reqs = [];
+  const seen = new Set();
 
-    // Immediate update on pause state change using the game's listener system
-    window.game.addStateListener((isPaused) => {
-        updatePresence();
-    });
-});
+  window.webpackChunkdiscord_app.push([[ Symbol() ], {}, req => {
+    if (req && !seen.has(req)) {
+      seen.add(req);
+      reqs.push(req);
+    }
+  }]);
+  window.webpackChunkdiscord_app.pop();
 
-client.login({ clientId }).catch(console.error);
+  const hasSource = (req, ...needles) => {
+    for (const id in req?.m) {
+      let source;
+      try {
+        source = req.m[id]?.toString?.();
+      } catch {
+        continue;
+      }
+
+      if (source && needles.every(needle => source.includes(needle))) return true;
+    }
+    return false;
+  };
+
+  return reqs.find(req =>
+    hasSource(req, 'getAssetImage: size must === [') &&
+    hasSource(req, 'Invalid Origin', 'coverImage', '.application')
+  ) || reqs.at(-1);
+};
+
+const findModule = (wpRequire, ...needles) => {
+  for (const id in wpRequire.m) {
+    let source;
+    try {
+      source = wpRequire.m[id]?.toString?.();
+    } catch {
+      continue;
+    }
+
+    if (!source || !needles.every(needle => source.includes(needle))) continue;
+
+    try {
+      return wpRequire(id);
+    } catch {}
+  }
+};
+
+const findInCache = (wpRequire, test, depth = 4) => {
+  const seen = new WeakSet();
+  let found;
+
+  const walk = (value, remainingDepth) => {
+    if (found || !value || (typeof value !== 'object' && typeof value !== 'function')) return;
+    if (value === window || value === document || value === globalThis) return;
+    if (seen.has(value)) return;
+    seen.add(value);
+
+    try {
+      if (test(value)) {
+        found = value;
+        return;
+      }
+    } catch {}
+
+    if (!remainingDepth) return;
+    eachCandidate(value, candidate => walk(candidate, remainingDepth - 1));
+  };
+
+  for (const id in wpRequire.c) {
+    const mod = wpRequire.c[id]?.exports;
+    if (!mod) continue;
+
+    walk(mod, depth);
+    if (found) return found;
+  }
+};
+
+const ws = new WebSocket('ws://127.0.0.1:1337'); // connect to arRPC bridge websocket
+ws.onmessage = async x => {
+  const msg = JSON.parse(x.data);
+
+  try {
+    if (!Dispatcher) {
+      const wpRequire = getWebpackRequire();
+
+      Dispatcher = findInCache(wpRequire, candidate =>
+        candidate &&
+        typeof candidate.dispatch === 'function' &&
+        typeof candidate.subscribe === 'function'
+      );
+
+      const assetMod = findModule(wpRequire, 'getAssetImage: size must === [');
+      eachCandidate(assetMod, candidate => {
+        if (!lookupAsset && typeof candidate === 'function') {
+          const str = candidate.toString();
+          if (str.includes('APPLICATION_ASSETS_FETCH_SUCCESS') &&
+            str.includes('startsWith("http:")')) {
+            lookupAsset = async (appId, name) => (await candidate(appId, [ name ]))[0];
+          }
+        }
+      });
+
+      const appMod = findModule(wpRequire, 'Invalid Origin', 'coverImage', '.application');
+      eachCandidate(appMod, candidate => {
+        if (!lookupApp && typeof candidate === 'function') {
+          const str = candidate.toString();
+          if (str.includes('Invalid Origin') &&
+            str.includes('coverImage') &&
+            str.includes('.application')) {
+            lookupApp = async appId => {
+              const socket = {};
+              await candidate(socket, appId);
+              return socket.application;
+            };
+          }
+        }
+      });
+
+      if (!Dispatcher || !lookupAsset || !lookupApp) {
+        throw new Error(`Failed to find Discord internals for arRPC bridge (${[
+          !Dispatcher && 'Dispatcher',
+          !lookupAsset && 'lookupAsset',
+          !lookupApp && 'lookupApp'
+        ].filter(Boolean).join(', ')})`);
+      }
+    }
+
+    if (msg.activity?.assets?.large_image) msg.activity.assets.large_image = await lookupAsset(msg.activity.application_id, msg.activity.assets.large_image);
+    if (msg.activity?.assets?.small_image) msg.activity.assets.small_image = await lookupAsset(msg.activity.application_id, msg.activity.assets.small_image);
+
+    if (msg.activity) {
+      const appId = msg.activity.application_id;
+      if (!apps[appId]) apps[appId] = await lookupApp(appId);
+
+      const app = apps[appId];
+      if (!msg.activity.name) msg.activity.name = app.name;
+    }
+
+    Dispatcher.dispatch({ type: 'LOCAL_ACTIVITY_UPDATE', ...msg }); // set RPC status
+  } catch (err) {
+    console.error('[arRPC bridge mod] Failed to handle message', err);
+  }
+};
+})();
