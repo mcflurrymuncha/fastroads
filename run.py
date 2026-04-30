@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the Fastroads app in a local Python web server with a native WebView window."""
+"""Run the Fastroads app in a local Python web server with a native WebView window + Discord RPC."""
 
 import functools
 import http.server
@@ -7,18 +7,29 @@ import socket
 import socketserver
 import threading
 import urllib.parse
+import time
 from pathlib import Path
 
 try:
     import webview
 except ImportError:
     raise SystemExit(
-        "[fastroadsinstall error] pywebview is not installed. Install it with: python -m pip install pywebview"
+        "pywebview is not installed. Install it with: python -m pip install pywebview"
+    )
+
+try:
+    from pypresence import Presence
+except ImportError:
+    raise SystemExit(
+        "pypresence is not installed. Install it with: python -m pip install pypresence"
     )
 
 ROOT = Path(__file__).resolve().parent
 HOST = "127.0.0.1"
 ICO_PATH = ROOT / "favicon_circle.ico"
+
+# Put your Discord Application ID here
+DISCORD_CLIENT_ID = "1"
 
 
 def load_icon_path() -> str | None:
@@ -51,12 +62,36 @@ def start_server(port: int) -> http.server.HTTPServer:
     return server
 
 
+def start_discord_rpc():
+    try:
+        rpc = Presence(DISCORD_CLIENT_ID)
+        rpc.connect()
+
+        rpc.update(
+            details="Playing testgame",
+            state="By vexi",
+            # large_image="logo",    upload in Discord developer portal
+            large_text="f a s t  r o a d s",
+            start=int(time.time())
+        )
+
+        print("Discord RPC connected.")
+        return rpc
+
+    except Exception as e:
+        print("Discord RPC failed:", e)
+        return None
+
+
 def main() -> None:
     port = find_free_port()
     server = start_server(port)
     url = f"http://{HOST}:{port}/"
 
+    rpc = start_discord_rpc()
+
     print(f"Serving {ROOT} at {url}")
+
     webview.create_window(
         "f a s t  r o a d s",
         url,
@@ -66,7 +101,11 @@ def main() -> None:
     )
 
     icon = load_icon_path()
-    webview.start(gui='edgechromium', icon=icon)
+    webview.start(gui="edgechromium", icon=icon)
+
+    if rpc:
+        rpc.close()
+
     server.shutdown()
     server.server_close()
 
