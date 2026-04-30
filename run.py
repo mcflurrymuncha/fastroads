@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the Fastroads app in a local Python web server with a native WebView window + Discord RPC."""
+"""Fastroads server + WebView + Discord RPC (safe + logged version)"""
 
 import functools
 import http.server
@@ -8,35 +8,55 @@ import socketserver
 import threading
 import urllib.parse
 import time
-import pypresence
+import traceback
+from datetime import datetime
 from pathlib import Path
 
-print("f a s t  r o a d s v23-beta (DiscordRPC Test)")
 try:
     import webview
 except ImportError:
-    raise SystemExit(
-        "pywebview is not installed. Install it with: python -m pip install pywebview"
-    )
+    raise SystemExit("pywebview missing: pip install pywebview")
 
 try:
     from pypresence import Presence
 except ImportError:
-    raise SystemExit(
-        "pypresence is not installed. Install it with: python -m pip install pypresence"
-    )
+    Presence = None
+
+
+# ----------------------------
+# LOGGING SYSTEM
+# ----------------------------
 
 ROOT = Path(__file__).resolve().parent
+LOG_FILE = ROOT / "fastroads.log"
+
+def log(msg: str):
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(f"[{datetime.now().isoformat()}] {msg}\n")
+
+def log_exception():
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write("\n" + "=" * 50 + "\n")
+        f.write(traceback.format_exc())
+        f.write("=" * 50 + "\n\n")
+
+
+# ----------------------------
+# CONFIG
+# ----------------------------
+
 HOST = "127.0.0.1"
 ICO_PATH = ROOT / "favicon_circle.ico"
-
-# Put your Discord Application ID here
 DISCORD_CLIENT_ID = "1"
 
 
-def load_icon_path() -> str | None:
+def load_icon_path():
     return str(ICO_PATH) if ICO_PATH.exists() else None
 
+
+# ----------------------------
+# HTTP SERVER
+# ----------------------------
 
 class GameRequestHandler(http.server.SimpleHTTPRequestHandler):
     def translate_path(self, path: str) -> str:
@@ -50,29 +70,27 @@ class ThreadingHTTPServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
     daemon_threads = True
 
 
-def find_free_port() -> int:
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.bind((HOST, 0))
-        return sock.getsockname()[1]
+def find_free_port():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind((HOST, 0))
+        return s.getsockname()[1]
 
 
-def start_server(port: int) -> http.server.HTTPServer:
+def start_server(port: int):
     handler = functools.partial(GameRequestHandler, directory=str(ROOT))
     server = ThreadingHTTPServer((HOST, port), handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     return server
-import time
 
-try:
-    from pypresence import Presence
-except ImportError:
-    Presence = None
 
+# ----------------------------
+# RPC SYSTEM (Discord + arRPC compatible)
+# ----------------------------
 
 def start_rpc():
     if Presence is None:
-        print("[RPC] pypresence not installed, skipping RPC")
+        log("[RPC] pypresence not installed")
         return None
 
     try:
@@ -87,38 +105,59 @@ def start_rpc():
             start=int(time.time())
         )
 
-        print("[RPC] Connected (Discord or arRPC)")
+        log("[RPC] Connected successfully")
         return rpc
 
     except Exception as e:
-        print("[RPC] Not available:", e)
+        log("[RPC] Failed to connect")
+        log_exception()
         return None
 
-def main() -> None:
-    port = find_free_port()
-    server = start_server(port)
-    url = f"http://{HOST}:{port}/"
 
-    rpc = start_discord_rpc()
+# ----------------------------
+# MAIN APP
+# ----------------------------
 
-    print(f"Serving {ROOT} at {url}")
+def main():
+    log("=== Fastroads starting ===")
 
-    webview.create_window(
-        "f a s t  r o a d s",
-        url,
-        width=1280,
-        height=800,
-        fullscreen=True,
-    )
+    try:
+        port = find_free_port()
+        server = start_server(port)
+        url = f"http://{HOST}:{port}/"
 
-    icon = load_icon_path()
-    webview.start(gui="edgechromium", icon=icon)
+        log(f"Server running at {url}")
 
-    if rpc:
-        rpc.close()
+        rpc = start_rpc()
 
-    server.shutdown()
-    server.server_close()
+        log("Launching WebView")
+
+        webview.create_window(
+            "f a s t r o a d s",
+            url,
+            width=1280,
+            height=800,
+            fullscreen=True,
+        )
+
+        icon = load_icon_path()
+
+        webview.start(gui="edgechromium", icon=icon)
+
+        if rpc:
+            try:
+                rpc.close()
+            except:
+                pass
+
+        server.shutdown()
+        server.server_close()
+
+        log("Clean shutdown complete")
+
+    except Exception:
+        log_exception()
+        raise
 
 
 if __name__ == "__main__":
