@@ -14,8 +14,8 @@ if ($Clean) {
     return
 }
 
-Write-Host '[fastroadsinstall] Ensuring PyInstaller, pywebview and Discord RPC deps are installed...'
-python -m pip install pyinstaller pywebview pypresence | Out-Null
+Write-Host '[fastroadsinstall] Installing build + RPC dependencies...'
+python -m pip install pyinstaller pywebview pypresence pypresence-arRPC | Out-Null
 
 $iconFile = Join-Path $PSScriptRoot 'favicon_circle.ico'
 
@@ -42,11 +42,11 @@ $hiddenImports = @(
 
 $args = @()
 
-if ($Debug) {
-    Write-Host '[fastroadsinstall] Debug mode enabled: building with console output.'
+if (-not $Debug) {
+    $args += '--windowed'
 }
 else {
-    $args += '--windowed'
+    Write-Host '[fastroadsinstall] Debug mode enabled.'
 }
 
 if ($OneFile) {
@@ -81,16 +81,13 @@ $args += 'pypresence'
 
 $args += '--name'
 $args += 'fastroads'
-
 $args += 'run.py'
 
-Write-Host '[fastroadsinstall] Building executable with PyInstaller...'
-Write-Host "[fastroadsinstall] python -m PyInstaller $($args -join ' ')"
-
+Write-Host '[fastroadsinstall] Building executable...'
 & python -m PyInstaller @args
 
 Write-Host ''
 Write-Host '[fastroadsinstall] Build complete.'
-Write-Host '[fastroadsinstall] Discord Rich Presence support included.'
-Write-Host '[fastroadsinstall] Make sure Discord is open before launching Fastroads.'
+Write-Host '[fastroadsinstall] Supports Discord Rich Presence + arRPC.'
+Write-Host '[fastroadsinstall] Discord, Vesktop, ArmCord, etc should all work.'
 Write-Host '[fastroadsinstall] Output: dist\fastroads or dist\fastroads.exe'
