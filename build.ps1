@@ -14,10 +14,11 @@ if ($Clean) {
     return
 }
 
-Write-Host '[fastroadsinstall] Ensuring PyInstaller and pywebview are installed...'
-python -m pip install pyinstaller pywebview | Out-Null
+Write-Host '[fastroadsinstall] Ensuring PyInstaller, pywebview and Discord RPC deps are installed...'
+python -m pip install pyinstaller pywebview pypresence | Out-Null
 
 $iconFile = Join-Path $PSScriptRoot 'favicon_circle.ico'
+
 $addData = @(
     'index.html;.'
     'manifest.json;.'
@@ -36,18 +37,22 @@ $hiddenImports = @(
     'webview.platforms.mshtml'
     'webview.platforms.winforms'
     'webview.platforms.cef'
+    'pypresence'
 )
 
 $args = @()
+
 if ($Debug) {
     Write-Host '[fastroadsinstall] Debug mode enabled: building with console output.'
-} else {
+}
+else {
     $args += '--windowed'
 }
 
 if ($OneFile) {
     $args += '--onefile'
-} else {
+}
+else {
     $args += '--onedir'
 }
 
@@ -70,11 +75,22 @@ foreach ($hiddenImport in $hiddenImports) {
 
 $args += '--collect-submodules'
 $args += 'webview'
+
+$args += '--collect-submodules'
+$args += 'pypresence'
+
 $args += '--name'
 $args += 'fastroads'
+
 $args += 'run.py'
 
 Write-Host '[fastroadsinstall] Building executable with PyInstaller...'
 Write-Host "[fastroadsinstall] python -m PyInstaller $($args -join ' ')"
+
 & python -m PyInstaller @args
-Write-Host '[fastroadsinstall] Build complete. See dist\fastroads or dist\fastroads.exe depending on mode.'
+
+Write-Host ''
+Write-Host '[fastroadsinstall] Build complete.'
+Write-Host '[fastroadsinstall] Discord Rich Presence support included.'
+Write-Host '[fastroadsinstall] Make sure Discord is open before launching Fastroads.'
+Write-Host '[fastroadsinstall] Output: dist\fastroads or dist\fastroads.exe'
